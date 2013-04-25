@@ -1,0 +1,55 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<h:head>
+    <title>tasks-jsf</title>
+
+	<h:outputStylesheet name="bootstrap/css/bootstrap.css" />
+	<h:outputStylesheet name="bootstrap/css/bootstrap-responsive.css" />
+	<h:outputStylesheet name="css/index.css" />
+    
+</h:head>
+
+<h:body>
+	<div class="navbar">
+	  <div class="navbar-inner">
+	    <a class="brand" href="#">Task</a>
+	    <ul class="nav">
+	      <li class="active"><a href="#">Home</a></li>
+	      <li><a href="#">Task Edit</a></li>
+	    </ul>
+	  </div>
+	</div>  
+
+
+    <h:form rendered="#{not authController.logged}" class="index form-horizontal ">
+    <fieldset>
+    	<legend>Tasks</legend>
+    	
+     	<div class="control-group">
+     		 <h:outputLabel value="Username" class="control-label"/>
+		     <div class="controls">
+		     	<h:inputText value="#{username}" />
+		     </div>
+		</div>
+		
+		<div class="control-group">
+     		 <h:outputLabel value="Password" class="control-label"/>
+		     <div class="controls">
+		     	<h:inputSecret value="#{password}" />
+		     </div>
+		</div>	
+		
+		<div class="control-group">
+		     <div class="controls">
+		     	<h:commandButton value="Log in" class="btn" action="#{authController.authenticate(username, password)}" />
+		     </div>
+		</div>	
+		
+    </fieldset>        
+    </h:form>
+    
+</h:body>
+
+</html>

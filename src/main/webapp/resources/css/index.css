@@ -1,0 +1,20 @@
+body {
+	background: #747474;
+}
+
+.index  legend {
+	font-size: 24px;
+	margin:4px;
+	width: 492px;
+}
+
+.index.form-horizontal {
+	background: white;
+	width: 500px;
+	margin: 200px auto 0px auto;
+	border: 1px solid #747474;
+	border-radius: 5px;
+	-moz-box-shadow: 0px 1px 5px #333333; 
+	-webkit-box-shadow: 0px 1px 5px #333333; 
+	box-shadow: 0px 1px 5px #333333;
+}
