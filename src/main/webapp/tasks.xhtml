@@ -4,107 +4,124 @@
 
 <h:head>
     <title>tasks-jsf</title>
-
-    <h:outputStylesheet>
-        h1 {
-            float: left;
-        }
-        div.clear {
-            clear: both;
-        }
-        .loginDetails {
-            float: right;
-        }
-        .taskGrid {
-            width: 100%;
-        }
-        .taskGrid td:first-child {
-            width: 30%;
-        }
-        .taskGrid td {
+    
+    <!-- something wrong with the icon png -->
+    <h:outputStylesheet name="bootstrap/css/bootstrap.css" />
+	<h:outputStylesheet name="bootstrap/css/bootstrap-responsive.css" />
+	
+	<!-- put the style and script here just for the moment -->
+	<h:outputStylesheet>
+		.loginDetails {
+			line-height: 40px;
+		}
+		
+		.taskGrid td {
             vertical-align: top
         }
-    </h:outputStylesheet>
+        
+        .addtask {
+        	margin-left: 60px;
+        }
+		
+	</h:outputStylesheet>
+	
+	<h:outputScript>
+        function onAddTask(data) {
+            if (data.status == 'success') {
+                var taskTitleInput = document.getElementById('form:taskTitle');
+                taskTitleInput.value = '';
+                taskTitleInput.focus();
+            }
+        }
+    </h:outputScript>
+	
 </h:head>
 
 <h:body>
-    <h1>Tasks</h1>
 
+	<!-- nav bar -->
+	<div class="navbar">
+	  <div class="navbar-inner">
+	    <a class="brand" href="#">Task</a>
+	    <ul class="nav">
+	      <li><a href="#">Home</a></li>
+	      <li class="active"><a href="#">Task Edit</a></li>
+	    </ul>
+	    
+	    <h:form>
+		    <div class="loginDetails pull-right">
+	            #{currentUser.username} (
+	            <h:commandLink value="logout" action="#{authController.logout}" />
+	            )
+	        </div>
+	    </h:form>
+	    
+	  </div>
+	</div> 
+	<!-- nav bar end -->
 
-    <h:form>
-        <div class="loginDetails">
-            #{currentUser.username} (
-            <h:commandLink value="logout" action="#{authController.logout}" />
-            )
-        </div>
-    </h:form>
-
-    <div class="clear" />
-
-    <h:panelGroup rendered="#{authController.logged}">
-        <h:outputScript>
-            function onAddTask(data) {
-                if (data.status == 'success') {
-                    var taskTitleInput = document.getElementById('form:taskTitle');
-                    taskTitleInput.value = '';
-                    taskTitleInput.focus();
-                }
-            }
-        </h:outputScript>
-
-        <h:form id="form">
-            <fieldset>
-                <legend>Add Task</legend>
-                <h:panelGrid columns="3">
-                    <h:outputLabel value="Task title" />
-                    <h:inputText id="taskTitle" value="#{taskTitle}" />
-
-                    <h:commandButton value="Add task" action="#{taskController.createTask(taskTitle)}">
-                        <f:ajax execute="@form" render=":form:taskGrid" onevent="onAddTask" />
-                    </h:commandButton>
-                </h:panelGrid>
-            </fieldset>
-
-            <h:panelGrid id="taskGrid" styleClass="taskGrid" columns="2">
-                <h:panelGroup id="taskList">
-                    <fieldset>
-                        <legend>List</legend>
-                        <h:dataTable var="task" value="#{taskList.all}">
-                            <h:column>
-                                <h:commandLink action="#{taskController.deleteTask(taskForDeletion)}">
-                                    <h:selectBooleanCheckbox />
-                                    <f:setPropertyActionListener target="#{taskForDeletion}" value="#{task}" />
-                                    <f:ajax render=":form:taskGrid" />
-                                </h:commandLink>
-
-                                <h:commandLink value="#{task.title}">
-                                    <f:setPropertyActionListener target="#{taskController.currentTask}" value="#{task}" />
-                                    <f:ajax render=":form:taskDetail" />
-                                </h:commandLink>
-                            </h:column>
-                        </h:dataTable>
-                    </fieldset>
-                </h:panelGroup>
-
-                <h:panelGroup id="taskDetail">
-                    <fieldset>
-                        <legend>Detail</legend>
-                        <h:panelGroup>
-                            <p>
-                                <h:outputText value="#{currentTask.title}" rendered="#{not empty currentTask}" />
-                            </p>
-                            <p>
-                                <h:commandLink value="Complete Task" action="#{taskController.deleteCurrentTask()}"
-                                    style="display: #{empty currentTask ? 'none' : 'inline'}">
-                                    <f:ajax render=":form:taskGrid" />
-                                </h:commandLink>
-                            </p>
-                        </h:panelGroup>
-                    </fieldset>
-                </h:panelGroup>
-            </h:panelGrid>
-        </h:form>
-    </h:panelGroup>
+	
+	<h:form id="form">
+		<!-- add task form -->
+		<div class="addtask span12">
+		    <h2>Add Task</h2>
+		    <h:panelGrid columns="3" styleClass="form-inline">
+		        <h:outputLabel value="Task title" placeholder="Text input" />
+		        <h:inputText id="taskTitle" value="#{taskTitle}" />
+		
+		        <h:commandButton value="Add task" styleClass="btn" action="#{taskController.createTask(taskTitle)}">
+		            <f:ajax execute="@form" render=":form:taskGrid" onevent="onAddTask" />
+		        </h:commandButton>
+		    </h:panelGrid>
+		</div>
+		<!-- add task form end -->
+	
+		<h:panelGrid id="taskGrid" styleClass="taskGrid span12" columns="2">
+		
+			<!-- display task list -->
+			<h:panelGroup id="taskList" styleClass="span4">
+				<h2>List</h2>
+			      
+				<h:outputText value="no task" rendered="#{empty taskList.all}" />
+			 
+				<h:dataTable var="task" styleClass="table table-striped" value="#{taskList.all}" rendered="#{not empty taskList.all}">
+					<h:column>
+						<h:commandLink value="#{task.title}">
+							<f:setPropertyActionListener target="#{taskController.currentTask}" value="#{task}" />
+							<f:ajax render=":form:taskDetail" />
+						</h:commandLink>
+				         
+						<h:commandLink action="#{taskController.deleteTask(taskForDeletion)}">
+							<i class="icon-trash"></i>
+							<f:setPropertyActionListener target="#{taskForDeletion}" value="#{task}" />
+							<f:ajax render=":form:taskGrid" />
+						</h:commandLink>
+					</h:column>
+				</h:dataTable>
+			</h:panelGroup>
+			<!-- task list end -->
+			
+			<!-- display task detail -->
+			<h:panelGroup id="taskDetail" styleClass="span8">
+				<h2>Detail</h2>
+				<div class="well well-large">
+					<p><h:outputText value="no task detail" rendered="#{empty currentTask}" /></p>
+			 	
+					<p><h:outputText value="#{currentTask.title}" rendered="#{not empty currentTask}" /></p>
+					
+					<p>
+						<h:commandLink value="Complete Task" action="#{taskController.deleteCurrentTask()}"
+			             style="display: #{empty currentTask ? 'none' : 'inline'}">
+							<f:ajax render=":form:taskGrid" />
+						</h:commandLink>
+					</p>
+				</div>
+			</h:panelGroup>
+	    	<!-- display task detail end -->
+	    
+		</h:panelGrid>
+	
+	</h:form>
 
 </h:body>
 
