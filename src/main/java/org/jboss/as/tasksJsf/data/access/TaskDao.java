@@ -27,6 +27,8 @@ import org.jboss.as.tasksJsf.data.model.User;
 public interface TaskDao {
 
     void createTask(User user, Task task);
+    
+    void updateTask(Task task);
 
     List<Task> getAll(User user);
 

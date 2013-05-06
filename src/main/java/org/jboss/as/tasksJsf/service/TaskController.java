@@ -52,4 +52,8 @@ public class TaskController {
     public void deleteCurrentTask() {
         deleteTask(currentTaskStore.get());
     }
+    
+    public void updateCurrentTask(Task task) {
+    	taskDao.updateTask(task);
+    };
 }

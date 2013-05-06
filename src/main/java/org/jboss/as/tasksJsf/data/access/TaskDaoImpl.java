@@ -70,6 +70,11 @@ public class TaskDaoImpl implements TaskDao {
         }
         em.remove(task);
     }
+    
+    @Override
+    public void updateTask(Task task) {
+    	em.merge(task);
+    }
 
     private TypedQuery<Task> querySelectAllTasksFromUser(User user) {
         return em.createQuery("SELECT t FROM Task t WHERE t.owner = ?", Task.class).setParameter(1, user);
