@@ -5,43 +5,9 @@
 <h:head>
     <title>tasks-jsf</title>
     
-    <!-- something wrong with the icon png -->
-    <h:outputStylesheet name="bootstrap/css/bootstrap.css" />
-	<h:outputStylesheet name="bootstrap/css/bootstrap-responsive.css" />
-	
-	<!-- put the style and script here just for the moment -->
-	<h:outputStylesheet>
-		body {
-			background: #747474;
-		}
-		
-		.container {
-			background: white;
-			border: 1px solid #747474;
-			border-radius: 5px;
-			-moz-box-shadow: 0px 1px 5px #333333; 
-			-webkit-box-shadow: 0px 1px 5px #333333; 
-			box-shadow: 0px 1px 5px #333333;
-			min-height: 600px;
-		}
-	
-		.loginDetails {
-			line-height: 40px;
-		}
-		
-		.taskGrid {
-			display: inline-block;
-		}
-		
-		.taskGrid td {
-            vertical-align: top;
-        }
-        
-        .addtask {
-        	margin-left: 30px;
-        }
-		
-	</h:outputStylesheet>
+	<link rel="stylesheet" type="text/css" href="resources/bootstrap/css/bootstrap.css" />
+	<link rel="stylesheet" type="text/css" href="resources/bootstrap/css/bootstrap-responsive.css" />
+	<link rel="stylesheet" type="text/css" href="resources/css/tasks.css" />
 	
 	<h:outputScript>
         function onAddTask(data) {
