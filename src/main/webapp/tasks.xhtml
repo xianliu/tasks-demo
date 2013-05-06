@@ -9,15 +9,7 @@
 	<link rel="stylesheet" type="text/css" href="resources/bootstrap/css/bootstrap-responsive.css" />
 	<link rel="stylesheet" type="text/css" href="resources/css/tasks.css" />
 	
-	<h:outputScript>
-        function onAddTask(data) {
-            if (data.status == 'success') {
-                var taskTitleInput = document.getElementById('form:taskTitle');
-                taskTitleInput.value = '';
-                taskTitleInput.focus();
-            }
-        }
-    </h:outputScript>
+	<h:outputScript library="js" name="jquery-1.9.1.js"/>
 	
 </h:head>
 
@@ -66,9 +58,11 @@
 	                <h:panelGroup id="taskList" styleClass="span4">
 		                 <h2>List</h2>
 		                
-		                <div class="alert">
-		                	<h:outputText styleClass="alert" value="no task" rendered="#{empty taskList.all}" />
-		                 </div>
+		                <h:panelGroup rendered="#{empty taskList.all}">
+		                	<div class="alert">
+			                	<h:outputText styleClass="alert" value="no task" rendered="#{empty taskList.all}" />
+			                 </div>
+		                </h:panelGroup>
 		                 
 		                 <h:dataTable var="task" value="#{taskList.all}" styleClass="table table-striped" rendered="#{not empty taskList.all}" >
 		                     <h:column>
@@ -101,6 +95,8 @@
 									style="display: #{empty currentTask ? 'none' : 'inline'}">
 									<f:ajax render=":form:taskGrid" />
 									</h:commandLink>
+									
+									<br/>
 									
 									<h:commandLink value="Update Task" action="#{taskController.updateCurrentTask(currentTask)}"
 									style="display: #{empty currentTask ? 'none' : 'inline'}">
